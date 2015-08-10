@@ -1,0 +1,25 @@
+{
+"00:1D:7E:BC:7A:17" : "Linksys",
+"60:A4:4C:8E:90:6C" : "Asus 5Ghz",
+"60:A4:4C:8E:90:68" : "Asus 2.4GHz",
+
+"28:CF:DA:1A:14:3F" : "Apple TV",
+"00:0E:2E:47:4D:3C" : "Argon",
+"44:74:6C:48:E5:7B" : "Sony D6503",
+"84:8E:DF:E3:5C:1B" : "Sony D5803",
+"5C:F8:A1:B1:B5:D7" : "Samsung S3",
+"74:E2:F5:5F:84:A4" : "iPhone 4S A",
+"18:34:51:BD:DF:85" : "iPhone 4S C",
+"90:B2:1F:3C:11:8D" : "iPad",
+"8C:70:5A:BA:46:98" : "Thinkpad",
+"A0:A8:CD:69:2B:2A" : "Dell",
+"08:60:6E:B5:F0:F5" : "Nexus",
+"B0:05:94:3C:BA:95" : "Playstation",
+"80:3F:5D:13:4D:2D" : "Kodi",
+	
+"F0:D1:A9:7F:D9:8C" : "iPhone BR",
+"88:63:DF:6F:65:E2" : "iPhone ÅR",
+"C0:EE:FB:35:5F:65" : "OnePlus AS",
+"A4:C3:61:8E:50:66" : "iPhone BS",
+"7C:FA:DF:66:8F:FF" : "iPhone YS"
+}
