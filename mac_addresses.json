@@ -639,6 +639,14 @@
       "company": "Apple", 
       "country": "UNITED STATES", 
       "macaddress": "5C:95:AE:D4:32:8B"
+    }, 
+    {
+      "address1": "1 Infinite Loop", 
+      "address2": "", 
+      "address3": "Cupertino CA 95014", 
+      "company": "Apple", 
+      "country": "UNITED STATES", 
+      "macaddress": "60:03:08:70:58:CC"
     }
   ]
 }
