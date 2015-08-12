@@ -57,22 +57,31 @@ def main(argv):
     for line in reader:
         #print line
         mylist = line.split(', ')
-        #print len(mylist)
-        if len(mylist) == 14 and len(mylist[0]) == 17 and len(mylist[12]) > 0:
-            #print mylist[0], mylist[12]
-            bssid_dict[mylist[0]] = mylist[12]
+        #print "%d, %d" % (len(mylist), len(mylist[0]))
+        if len(mylist) == 14 and len(mylist[0]) == 17 and len(mylist[13]) > 3:       
+            ssid = mylist[13][:-3]
+            bssid_dict[mylist[0]] = ssid
+            #print mylist[0], ssid
 
-        if len(mylist) == 15 and len(mylist[0]) == 17 and len(mylist[13]) > 0:
-            #print mylist[0], mylist[13]
-            bssid_dict[mylist[0]] = mylist[13]
+        if len(mylist) == 13 and len(mylist[0]) == 17 and len(mylist[12]) > 3:
+            ssid = mylist[12][:-3]
+            bssid_dict[mylist[0]] = ssid
+            #print mylist[0], ssid
         
-        if len(mylist) == 7 and len(mylist[0]) == 17:
+        if (len(mylist) == 6 or len(mylist) == 7 )and len(mylist[0]) == 17:
             #print mylist[2]
             #print dt.datetime.now().strftime('%Y-%m-%d %X')
             #oLastTime = dt.datetime.strptime("%Y-%m-%d %X", mylist[2])
             #if oLastTime > lastHourDateTime:
 
-            if mylist[2] > lastHourDateTime.strftime('%Y-%m-%d %X'):
+            lastCheck = lastHourDateTime.strftime('%Y-%m-%d %X')
+            lastCheck = '2015-08-01 01:00:00'
+            if mylist[2] > lastCheck:
+                #print mylist[0]
+                probedESSIDs = ""
+                if len(mylist) > 6:
+                    probedESSIDs = mylist[6].strip()
+                    
                 mac_object = mac_storage.mac_address_lookup(mylist[0])
                 if mac_object :
                     mydict = {
@@ -84,7 +93,7 @@ def main(argv):
                     "Packets":mylist[4].strip(),
                     "BSSID":mylist[5],
                     "BSSIDName":mac_address_name(mylist[5]),
-                    "ProbedESSIDs":mylist[6].strip(),
+                    "ProbedESSIDs":probedESSIDs,
                     "Vendor":mac_object.company
                     }
                     json.dump(mydict, jsonfile)

@@ -17,7 +17,7 @@ class MacAddressStorage:
  
     def mac_address_lookup_from_internet(self, mac_address):
         try:
-            print "Load from Internet"
+            print "Load from Internet %s" % mac_address
             # Set the request URL http://www.macvendorlookup.com/api/v2/08-86-3B-D4-90-C0
             url = 'http://www.macvendorlookup.com/api/v2/' + mac_address
 
@@ -43,8 +43,15 @@ class MacAddressStorage:
                     mac_object.address3 = address3['addressL3']
                 for country in data:
                     mac_object.country = country['country']
-
-                return mac_object
+            else:
+                mac_object.mac_address = mac_address
+                mac_object.company = ""
+                mac_object.address1 = ""
+                mac_object.address2 = ""
+                mac_object.address3 = ""
+                mac_object.country = ""
+                
+            return mac_object
         except :
             print "Unexpected error:", url, resp
             return None
@@ -76,9 +83,11 @@ class MacAddressStorage:
                 mac_object = self.mac_address_lookup_from_internet(mac_address)
                 if mac_object is not None :
                     #self.load_data_from_file()
+                    print mac_address
                     self.data["mac addresses"].append( {"macaddress":mac_address, "company":mac_object.company, "address1":mac_object.address1, "address2":mac_object.address2, "address3":mac_object.address3, "country":mac_object.country} )
                     self.store_data_to_file()
-                
+                else :
+                    return None
             return mac_object
         except :
             print "mac_address_lookup error:"
