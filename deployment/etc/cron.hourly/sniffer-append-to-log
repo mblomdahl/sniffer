@@ -1,0 +1,5 @@
+#!/bin/sh
+echo  `date` >> /home/pi/sniffer/cronlog.log
+
+python /home/pi/sniffer/append2log.py >> /home/pi/sniffer/cronlog.log
+
