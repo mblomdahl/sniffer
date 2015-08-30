@@ -1,21 +1,25 @@
-import sys, getopt
+# -*- coding: utf-8 -*-
+
+import sys
+import getopt
 import json
 import datetime as dt
 import mac_address_info
 
-def mac_address_name( mac_address ):
-    #print bssid_dict.has_key(mac_address), mac_address
+
+def mac_address_name(mac_address):
+    # print bssid_dict.has_key(mac_address), mac_address
     if bssid_dict.has_key(mac_address):
-        #print bssid_dict[mac_address]
+        # print bssid_dict[mac_address]
         return bssid_dict[mac_address]
     else:
         infile = open('/home/pi/sniffer/config.json', 'r')
-        #reader = infile.readlines()
-        #print reader
+        # reader = infile.readlines()
+        # print reader
         json_object = json.load(infile)
 
         for attribute, value in json_object.iteritems():
-            #print attribute, value # example usage
+            # print attribute, value # example usage
             if attribute == mac_address:
                 return value
         return mac_address
@@ -25,7 +29,7 @@ def main(argv):
     inputfile = '/var/log/aircrack-ng/sniff.txt-01.csv'
     outputfile = '/var/log/aircrack-ng/log.json'
     try:
-        opts, args = getopt.getopt(argv,"hi:o:",["ifile=","ofile="])
+        opts, args = getopt.getopt(argv, "hi:o:", ["ifile=", "ofile="])
     except getopt.GetoptError:
         print 'test.py -i <inputfile> -o <outputfile>'
         sys.exit(2)
@@ -38,13 +42,13 @@ def main(argv):
             inputfile = arg
         elif opt in ("-o", "--ofile"):
             outputfile = arg
-    #print 'Input file is :', inputfile
-    #print 'Output file is :', outputfile
+    # print 'Input file is :', inputfile
+    # print 'Output file is :', outputfile
 
-    #mac_address_name("aaa")
-    #bssid_dict = dict()
-                
-    lastHourDateTime = dt.datetime.now() - dt.timedelta(hours = 1)
+    # mac_address_name("aaa")
+    # bssid_dict = dict()
+
+    lastHourDateTime = dt.datetime.now() - dt.timedelta(hours=1)
     infile = open(inputfile, 'r')
     jsonfile = open(outputfile, 'a')
     # lastHourDateTime = dt.datetime.now() - dt.timedelta(hours = 10000)
@@ -55,49 +59,50 @@ def main(argv):
 
     reader = infile.readlines()
     for line in reader:
-        #print line
+        # print line
         mylist = line.split(', ')
-        #print "%d, %d" % (len(mylist), len(mylist[0]))
-        if len(mylist) == 14 and len(mylist[0]) == 17 and len(mylist[13]) > 3:       
+        # print "%d, %d" % (len(mylist), len(mylist[0]))
+        if len(mylist) == 14 and len(mylist[0]) == 17 and len(mylist[13]) > 3:
             ssid = mylist[13][:-3]
             bssid_dict[mylist[0]] = ssid
-            #print mylist[0], ssid
+            # print mylist[0], ssid
 
         if len(mylist) == 13 and len(mylist[0]) == 17 and len(mylist[12]) > 3:
             ssid = mylist[12][:-3]
             bssid_dict[mylist[0]] = ssid
-            #print mylist[0], ssid
-        
-        if (len(mylist) == 6 or len(mylist) == 7 )and len(mylist[0]) == 17:
-            #print mylist[2]
-            #print dt.datetime.now().strftime('%Y-%m-%d %X')
-            #oLastTime = dt.datetime.strptime("%Y-%m-%d %X", mylist[2])
-            #if oLastTime > lastHourDateTime:
+            # print mylist[0], ssid
+
+        if (len(mylist) == 6 or len(mylist) == 7) and len(mylist[0]) == 17:
+            # print mylist[2]
+            # print dt.datetime.now().strftime('%Y-%m-%d %X')
+            # oLastTime = dt.datetime.strptime("%Y-%m-%d %X", mylist[2])
+            # if oLastTime > lastHourDateTime:
 
             lastCheck = lastHourDateTime.strftime('%Y-%m-%d %X')
             lastCheck = '2015-08-01 01:00:00'
             if mylist[2] > lastCheck:
-                #print mylist[0]
+                # print mylist[0]
                 probedESSIDs = ""
                 if len(mylist) > 6:
                     probedESSIDs = mylist[6].strip()
-                    
+
                 mac_object = mac_storage.mac_address_lookup(mylist[0])
-                if mac_object :
+                if mac_object:
                     mydict = {
-                    "StationMAC":mylist[0],
-                    "Device":mac_address_name(mylist[0]),
-                    "FirstTimeSeen":mylist[1],
-                    "LastTimeSeen":mylist[2],
-                    "Power":mylist[3],
-                    "Packets":mylist[4].strip(),
-                    "BSSID":mylist[5],
-                    "BSSIDName":mac_address_name(mylist[5]),
-                    "ProbedESSIDs":probedESSIDs,
-                    "Vendor":mac_object.company
+                        "StationMAC": mylist[0],
+                        "Device": mac_address_name(mylist[0]),
+                        "FirstTimeSeen": mylist[1],
+                        "LastTimeSeen": mylist[2],
+                        "Power": mylist[3],
+                        "Packets": mylist[4].strip(),
+                        "BSSID": mylist[5],
+                        "BSSIDName": mac_address_name(mylist[5]),
+                        "ProbedESSIDs": probedESSIDs,
+                        "Vendor": mac_object.company
                     }
                     json.dump(mydict, jsonfile)
                     jsonfile.write('\n')
+
 
 if __name__ == "__main__":
     bssid_dict = dict()
